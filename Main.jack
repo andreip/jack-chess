@@ -1,0 +1,14 @@
+class Main {
+    function void main() {
+        var int numberOffset;
+        let numberOffset = 32;
+        do DrawSprites.draw1(numberOffset);
+        do DrawSprites.draw2(numberOffset + 1);
+        do DrawSprites.draw3(numberOffset + 2);
+        do DrawSprites.draw4(numberOffset + 3);
+        do DrawSprites.draw5(numberOffset + 4);
+        //do Draw.drawKnightWhite(numberOffset + 56);
+        //do Draw.drawKnightBlack(numberOffset + 64);
+        return;
+    }
+}

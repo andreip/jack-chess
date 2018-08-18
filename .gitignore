@@ -1,0 +1,5 @@
+*.sw*
+*.pyc
+*.vm
+__pycache__
+py/
