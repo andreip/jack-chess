@@ -7,8 +7,24 @@ class Main {
         do DrawSprites.draw3(numberOffset + 2);
         do DrawSprites.draw4(numberOffset + 3);
         do DrawSprites.draw5(numberOffset + 4);
-        //do Draw.drawKnightWhite(numberOffset + 56);
-        //do Draw.drawKnightBlack(numberOffset + 64);
+        do DrawSprites.drawPawnWW(numberOffset + 5);
+        do DrawSprites.drawPawnBB((numberOffset + 5) + (32 * 16));
+        do DrawSprites.drawPawnWB((numberOffset + 5) + (64 * 16));
+        do DrawSprites.drawKingWW(numberOffset + 6);
+        do DrawSprites.drawKingBB((numberOffset + 6) + (32 * 16));
+        do DrawSprites.drawKingWB((numberOffset + 6) + (64 * 16));
+        do DrawSprites.drawQueenWW(numberOffset + 7);
+        do DrawSprites.drawQueenBB((numberOffset + 7) + (32 * 16));
+        do DrawSprites.drawQueenWB((numberOffset + 7) + (64 * 16));
+        do DrawSprites.drawBishopWW(numberOffset + 8);
+        do DrawSprites.drawBishopBB((numberOffset + 8) + (32 * 16));
+        do DrawSprites.drawBishopWB((numberOffset + 8) + (64 * 16));
+        do DrawSprites.drawRookWW(numberOffset + 9);
+        do DrawSprites.drawRookBB(numberOffset + 9 + (32 * 16));
+        do DrawSprites.drawRookWB(numberOffset + 9 + (64 * 16));
+        do DrawSprites.drawKnightWW(numberOffset + 10);
+        do DrawSprites.drawKnightBB((numberOffset + 10) + (32 * 16));
+        do DrawSprites.drawKnightWB((numberOffset + 10) + (64 * 16));
         return;
     }
 }
