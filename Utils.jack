@@ -9,8 +9,27 @@ class Utils {
     function int ROOK() { return 13; }
     function int QUEEN() { return 14; }
     function int KING() { return 15; }
+    /* Keyboard keys */
+    function int LEFTARROWKEY() { return 130; }
+    function int UPARROWKEY() { return 131; }
+    function int RIGHTARROWKEY() { return 132; }
+    function int DOWNARROWKEY() { return 133; }
+    function int ESCKEY() { return 140; }
+    function int SPACEKEY() { return 32; }
     /* Math */
     function int mod(int n, int p) {
         return n - ((n / p) * p);
+    }
+    /* Memory */
+    // Uses the knowledge of how hack memory is organized, in
+    // words of 16bits and 512 x 256 pixels.
+    // Converts from virtual system of 16 rows by 32 columns
+    // into the exact pixel location.
+    function int getLocation(int row, int col) {
+        // multiply row by 32 because horizontally multiplying
+        // by 32 gets us right underneath, one pixel lower.
+        // but since we want to have 16 rows not 256 pixels
+        // vertically too, multiply by 16 to get to next row.
+        return row * (32 * 16) + col;
     }
 }

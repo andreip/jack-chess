@@ -77,9 +77,11 @@ class Board {
     }
 
     method int getLocation(int i, int j) {
-        //return (startX - i) * 32 + 
-        // TODO fixme
-        return (startX - (i * 16 * 32)) + (startY + j);
+        return Utils.getLocation(
+            (startX - i),   // board is drawing itself upwards
+            (startY + j)    // and to the left
+        );
+        //return (startX - (i * 16 * 32)) + (startY + j);
     }
 
     method void initBoard() {

@@ -1,0 +1,72 @@
+class ChessGame {
+    field Board board;
+    field boolean exit;
+    static ChessGame instance;
+
+    /* Singleton methods, don't call constructor directly. */
+    function void newInstance() {
+        let instance = ChessGame.new();
+        return;
+    }
+    function ChessGame getInstance() {
+        return instance;
+    }
+
+    constructor ChessGame new() {
+        // set bottom left corner in the 32 x 16 grid.
+        // knowing that the board will take 9 x 9 space.
+        let board = Board.new(13, (32-9) / 2);
+        let exit = false;
+        return this;
+    }
+
+    method void dispose() {
+        do board.dispose();
+        do Memory.deAlloc(this);
+        return;
+    }
+
+    /* ChessGame loop */
+    method void run() {
+        var char key, crtKey;
+
+        do board.draw();
+
+        while (~exit) {
+            // wait for key to be pressed.
+            while ((key = 0) & (~exit)) {
+                let key = Keyboard.keyPressed();
+                do Sys.wait(50);
+            }
+            let crtKey = key;
+            // Waits for the key to be released.
+            while ((~(key = 0)) & (~exit)) {
+                let key = Keyboard.keyPressed();
+                do Sys.wait(50);
+            }
+
+            do Output.printString("Pressed key ");
+            do Output.printInt(crtKey);
+            do Output.printString(" ");
+            if (crtKey = Utils.LEFTARROWKEY()) {
+                do Output.printString("left arrow");
+            }
+            if (crtKey = Utils.UPARROWKEY()) {
+                do Output.printString("up arrow");
+            }
+            if (crtKey = Utils.RIGHTARROWKEY()) {
+                do Output.printString("right arrow");
+            }
+            if (crtKey = Utils.DOWNARROWKEY()) {
+                do Output.printString("down arrow");
+            }
+            if (crtKey = Utils.ESCKEY()) {
+                do Output.printString("esc");
+            }
+            if (crtKey = Utils.SPACEKEY()) {
+                do Output.printString("space");
+            }
+        }
+        return;
+    }
+}
