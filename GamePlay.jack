@@ -1,0 +1,61 @@
+/* Information about players and who's turn is to move. */
+class GamePlay {
+    // rectangle to draw itself into, with top left corner.
+    field int x, y, size;
+    field int crtPlayerToMove;
+    // reference to it, so it can tell it when a move has happened.
+    field Board board;
+
+    constructor GamePlay new(int _x, int _y, int _size, Board b) {
+        let x = _x;
+        let y = _y;
+        let size = _size;
+        // just an acquaintance, doesn't deallocate it itself.
+        let board = b;
+        do newGame();
+        return this;
+    }
+
+    method void dispose() {
+        do Memory.deAlloc(this);
+        return;
+    }
+
+    method void draw() {
+        do Utils.drawRectangleBorder(x, y, x + size, y + size);
+        do _drawPlayerToMoveIndicator();
+        do _writeInPlayerArea(Utils.WHITE(), 2, "Player 1");
+        do _writeInPlayerArea(Utils.BLACK(), 2, "Player 2");
+        return;
+    }
+
+    method void _drawPlayerToMoveIndicator() {
+        // erase crt player and redraw.
+        do _writeInPlayerArea(Utils.WHITE(), 0, " ");
+        do _writeInPlayerArea(Utils.BLACK(), 0, " ");
+        // redraw that he's the active player.
+        do _writeInPlayerArea(crtPlayerToMove, 0, "<");
+        return;
+    }
+
+    method void _writeInPlayerArea(int color, int offset, String text) {
+        var int row;
+        if (color = Utils.WHITE()) {
+            let row = (y + size) - (Utils.FONTWIDTH() * 2);
+        } else {
+            let row = y + Utils.FONTWIDTH();
+        }
+
+        do Utils.printStringAtPx(
+            text,
+            x + (Utils.FONTWIDTH() * (offset + 1)),
+            row
+        );
+        return;
+    }
+
+    method void newGame() {
+        let crtPlayerToMove = Utils.WHITE();
+        return;
+    }
+}

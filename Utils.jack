@@ -9,6 +9,56 @@ class Utils {
     function int ROOK() { return 13; }
     function int QUEEN() { return 14; }
     function int KING() { return 15; }
+
+    // number of rows/cols for a chess board.
+    function int CHESSN() { return 8; }
+
+    /* Screen helpers. */
+
+    function int ROWS() { return 256; }
+    function int COLS() { return 512; }
+    // documentation says there are 23 rows x 64 cols for
+    // writing text using the Output class API.
+    function int TEXTROWS() { return 23; }
+    function int TEXTCOLS() { return 64; }
+
+    function int FONTWIDTH() { return 8; }
+    function int FONTHEIGHT() { return 11; }
+
+    function void printStringCentered(String s, int row) {
+        var int col;
+        let col = (Utils.TEXTCOLS() - s.length()) / 2;
+        do Output.moveCursor(row, col);
+        do Output.printString(s);
+        return;
+    }
+
+    function void printStringAt(String s, int row, int col) {
+        do Output.moveCursor(row, col);
+        do Output.printString(s);
+        return;
+    }
+
+    function void printStringAtPx(String s, int px, int py) {
+        var int row, col;
+        // Converts from pixels to rows and columns for the text
+        // output which uses a fixed font.
+        let row = py / Utils.FONTHEIGHT();
+        let col = px / Utils.FONTWIDTH();
+        do Utils.printStringAt(s, row, col);
+        return;
+    }
+
+    // draws a non-filled rectangle, thickness of border = 1.
+    function void drawRectangleBorder(int x1, int y1, int x2, int y2) {
+        do Screen.setColor(true);
+        do Screen.drawLine(x1, y1, x2, y1);  // vertical1
+        do Screen.drawLine(x1, y2, x2, y2);  // vertical2
+        do Screen.drawLine(x2, y1, x2, y2);  // horizontal1
+        do Screen.drawLine(x1, y1, x1, y2);  // horizontal2
+        return;
+    }
+
     /* Keyboard keys */
     function int LEFTARROWKEY() { return 130; }
     function int UPARROWKEY() { return 131; }
@@ -21,8 +71,9 @@ class Utils {
         return n - ((n / p) * p);
     }
     /* Memory */
+    function int WORD() { return 16; }
     // Uses the knowledge of how hack memory is organized, in
-    // words of 16bits and 512 x 256 pixels.
+    // words of 16bits and 256 x 512 pixels.
     // Converts from virtual system of 16 rows by 32 columns
     // into the exact pixel location.
     function int getLocation(int row, int col) {

@@ -1,6 +1,6 @@
 class Board {
     // bottom left corner where board starts drawing from
-    field int startX, startY;
+    field int startRow, startCol;
     field int rows, cols;
     field int n;
     field Array board;
@@ -10,8 +10,8 @@ class Board {
         var Piece b;
 
         do Screen.clearScreen();
-        let startX = x;
-        let startY = y;
+        let startRow = x;
+        let startCol = y;
         let rows = 9;  // includes coordinate system and pieces
         let cols = 9;
 
@@ -78,10 +78,15 @@ class Board {
 
     method int getLocation(int i, int j) {
         return Utils.getLocation(
-            (startX - i),   // board is drawing itself upwards
-            (startY + j)    // and to the left
+            (startRow - i),   // board is drawing itself upwards
+            (startCol + j)    // and to the left
         );
-        //return (startX - (i * 16 * 32)) + (startY + j);
+    }
+
+    // Pieces are inwards more due to the fact that first we
+    // draw board numbers.
+    method int getPieceLocation(int i, int j) {
+        return getLocation(i + 1, j + 1);
     }
 
     method void initBoard() {
@@ -110,7 +115,7 @@ class Board {
         while (i < n) {
             let j = 0;
             while (j < n) {
-                let location = getLocation(i, j);
+                let location = getPieceLocation(i, j);
                 let squareColor = Board.squareColor(i, j);
                 let p = Board(i, j);
                 // draw empty square if no piece.
@@ -131,7 +136,23 @@ class Board {
     }
 
     method void drawAroundBoard() {
-        // TODO: draw numbers
+        do DrawSprites.draw1(getLocation(1, 0));
+        do DrawSprites.draw2(getLocation(2, 0));
+        do DrawSprites.draw3(getLocation(3, 0));
+        do DrawSprites.draw4(getLocation(4, 0));
+        do DrawSprites.draw5(getLocation(5, 0));
+        do DrawSprites.draw6(getLocation(6, 0));
+        do DrawSprites.draw7(getLocation(7, 0));
+        do DrawSprites.draw8(getLocation(8, 0));
+
+        do DrawSprites.drawA(getLocation(0, 1));
+        do DrawSprites.drawB(getLocation(0, 2));
+        do DrawSprites.drawC(getLocation(0, 3));
+        do DrawSprites.drawD(getLocation(0, 4));
+        do DrawSprites.drawE(getLocation(0, 5));
+        do DrawSprites.drawF(getLocation(0, 6));
+        do DrawSprites.drawG(getLocation(0, 7));
+        do DrawSprites.drawH(getLocation(0, 8));
         return;
     }
 

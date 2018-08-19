@@ -1,6 +1,7 @@
 class ChessGame {
-    field Board board;
     field boolean exit;
+    field Board board;
+    field GamePlay gamePlay;
     static ChessGame instance;
 
     /* Singleton methods, don't call constructor directly. */
@@ -16,12 +17,22 @@ class ChessGame {
         // set bottom left corner in the 32 x 16 grid.
         // knowing that the board will take 9 x 9 space.
         let board = Board.new(13, (32-9) / 2);
+
+        // starts at same level as board and has a size of 8 pieces,
+        // same as the chessboard.
+        let gamePlay = GamePlay.new(
+            22 * Utils.WORD(),
+            5 * Utils.WORD(),
+            Utils.CHESSN() * Utils.WORD(),
+            board
+        );
         let exit = false;
         return this;
     }
 
     method void dispose() {
         do board.dispose();
+        do gamePlay.dispose();
         do Memory.deAlloc(this);
         return;
     }
@@ -30,7 +41,9 @@ class ChessGame {
     method void run() {
         var char key, crtKey;
 
+        do shortcutsDraw();
         do board.draw();
+        do gamePlay.draw();
 
         while (~exit) {
             // wait for key to be pressed.
@@ -67,6 +80,28 @@ class ChessGame {
                 do Output.printString("space");
             }
         }
+        return;
+    }
+
+    method void shortcutsDraw() {
+        var int n, i, rowStart;
+        var Array msgs;
+
+        let rowStart = 1;
+
+        let n = 4;
+        let msgs = Array.new(n);
+        let msgs[0] = "Shortcuts:";
+        let msgs[1] = "arrow keys: navigate between pieces to move";
+        let msgs[2] = "space: select square to move a piece to/from";
+        let msgs[3] = "escape: start a new game";
+
+        let i = 0;
+        while (i < n) {
+            do Utils.printStringCentered(msgs[i], rowStart + i);
+            let i = i + 1;
+        }
+
         return;
     }
 }
