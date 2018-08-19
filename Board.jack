@@ -1,0 +1,179 @@
+class Board {
+    // bottom left corner where board starts drawing from
+    field int startX, startY;
+    field int rows, cols;
+    field int n;
+    field Array board;
+
+    constructor Board new(int x, int y) {
+        var int i;
+        var Piece b;
+
+        do Screen.clearScreen();
+        let startX = x;
+        let startY = y;
+        let rows = 9;  // includes coordinate system and pieces
+        let cols = 9;
+
+        let n = 8;
+        let i = 0;
+        let board = Array.new(n);
+        while (i < n) {
+            let board[i] = Array.new(n);
+            let i = i + 1;
+        }
+        do initBoard();
+
+        return this;
+    }
+
+    method void dispose() {
+        var int i, j;
+        var Array a;
+        var Piece p;
+
+        // first dispose of the pieces on the board
+        let i = 0;
+        while (i < n) {
+            let j = 0;
+            while (j < n) {
+                let p = Board(i, j);
+                if (~(p = null)) {
+                    do p.dispose();
+                }
+                let j = j + 1;
+            }
+            let i = i + 1;
+        }
+        // then dispose of the board array
+        let i = 0;
+        while (i < n) {
+            let a = board[i];
+            do a.dispose();
+            let i = i + 1;
+        }
+        do board.dispose();
+
+        do Memory.deAlloc(this);
+        return;
+    }
+
+    method Piece Board(int i, int j) {
+        var Piece p;
+        let p = board[i];
+        let p = p[j];
+        return p;
+    }
+
+    method void setBoard(int i, int j, Piece p) {
+        var Array tmp;
+        let tmp = board[i];
+        let tmp[j] = p;
+        return;
+    }
+
+    method int mirror(int i) {
+        return (n - i) - 1;
+    }
+
+    method int getLocation(int i, int j) {
+        //return (startX - i) * 32 + 
+        // TODO fixme
+        return (startX - (i * 16 * 32)) + (startY + j);
+    }
+
+    method void initBoard() {
+        // fill board with null.
+        do _initNull();
+        // fill board with pieces.
+        do _initPawns(1, Utils.WHITE());
+        do _initPawns(mirror(1), Utils.BLACK());
+        do _initRestPieces(0, Utils.WHITE());
+        do _initRestPieces(mirror(0), Utils.BLACK());
+        return;
+    }
+
+    method void draw() {
+        do drawBoard();
+        do drawAroundBoard();
+        return;
+    }
+
+    method void drawBoard() {
+        var Piece p;
+        var int i, j;
+        var int location, squareColor;
+
+        let i = 0;
+        while (i < n) {
+            let j = 0;
+            while (j < n) {
+                let location = getLocation(i, j);
+                let squareColor = Board.squareColor(i, j);
+                let p = Board(i, j);
+                // draw empty square if no piece.
+                if (p = null) {
+                    if (squareColor = Utils.WHITE()) {
+                        do DrawSprites.drawWhite(location);
+                    } else {
+                        do DrawSprites.drawBlack(location);
+                    }
+                } else {
+                    do p.drawPiece(location, squareColor);
+                }
+                let j = j + 1;
+            }
+            let i = i + 1;
+        }
+        return;
+    }
+
+    method void drawAroundBoard() {
+        // TODO: draw numbers
+        return;
+    }
+
+    method void _initNull() {
+        var int i, j;
+        let i = 0;
+        while (i < n) {
+            let j = 0;
+            while (j < n) {
+                do setBoard(i, j, null);
+                let j = j + 1;
+            }
+            let i = i + 1;
+        }
+        return;
+    }
+
+    method void _initPawns(int i, int color) {
+        var int j;
+        let j = 0;
+        while (j < n) {
+            do setBoard(i, j, Piece.newPawn(i, j, color));
+            let j = j + 1;
+        }
+        return;
+    }
+
+    method void _initRestPieces(int i, int color) {
+        do setBoard(i, 0, Piece.newRook(i, 0, color));
+        do setBoard(i, 1, Piece.newKnight(i, 1, color));
+        do setBoard(i, 2, Piece.newBishop(i, 2, color));
+        do setBoard(i, 3, Piece.newQueen(i, 3, color));
+        do setBoard(i, 4, Piece.newKing(i, 4, color));
+        do setBoard(i, 5, Piece.newBishop(i, 5, color));
+        do setBoard(i, 6, Piece.newKnight(i, 6, color));
+        do setBoard(i, 7, Piece.newRook(i, 7, color));
+        return;
+    }
+
+    function int squareColor(int x, int y) {
+        if (Utils.mod(x, 2) = Utils.mod(y, 2)) {
+            return Utils.BLACK();
+        } else {
+            return Utils.WHITE();
+        }
+    }
+}

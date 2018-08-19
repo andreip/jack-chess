@@ -1,0 +1,16 @@
+class Utils {
+    /* Colors */
+    function int WHITE() { return 100; }
+    function int BLACK() { return 101; }
+    /* Piece constant values. */
+    function int PAWN() { return 10; }
+    function int BISHOP() { return 11; }
+    function int KNIGHT() { return 12; }
+    function int ROOK() { return 13; }
+    function int QUEEN() { return 14; }
+    function int KING() { return 15; }
+    /* Math */
+    function int mod(int n, int p) {
+        return n - ((n / p) * p);
+    }
+}

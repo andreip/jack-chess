@@ -1,30 +1,55 @@
 class Main {
     function void main() {
-        var int numberOffset;
-        let numberOffset = 32;
-        do DrawSprites.draw1(numberOffset);
-        do DrawSprites.draw2(numberOffset + 1);
-        do DrawSprites.draw3(numberOffset + 2);
-        do DrawSprites.draw4(numberOffset + 3);
-        do DrawSprites.draw5(numberOffset + 4);
-        do DrawSprites.drawPawnWW(numberOffset + 5);
-        do DrawSprites.drawPawnBB((numberOffset + 5) + (32 * 16));
-        do DrawSprites.drawPawnWB((numberOffset + 5) + (64 * 16));
-        do DrawSprites.drawKingWW(numberOffset + 6);
-        do DrawSprites.drawKingBB((numberOffset + 6) + (32 * 16));
-        do DrawSprites.drawKingWB((numberOffset + 6) + (64 * 16));
-        do DrawSprites.drawQueenWW(numberOffset + 7);
-        do DrawSprites.drawQueenBB((numberOffset + 7) + (32 * 16));
-        do DrawSprites.drawQueenWB((numberOffset + 7) + (64 * 16));
-        do DrawSprites.drawBishopWW(numberOffset + 8);
-        do DrawSprites.drawBishopBB((numberOffset + 8) + (32 * 16));
-        do DrawSprites.drawBishopWB((numberOffset + 8) + (64 * 16));
-        do DrawSprites.drawRookWW(numberOffset + 9);
-        do DrawSprites.drawRookBB(numberOffset + 9 + (32 * 16));
-        do DrawSprites.drawRookWB(numberOffset + 9 + (64 * 16));
-        do DrawSprites.drawKnightWW(numberOffset + 10);
-        do DrawSprites.drawKnightBB((numberOffset + 10) + (32 * 16));
-        do DrawSprites.drawKnightWB((numberOffset + 10) + (64 * 16));
+        var int boardX, boardY, word;
+        var Board board;
+
+        let word = 16;  // 16 bits
+        let boardX = 13 * 32 * word;
+        let boardY = 8;
+        let board = Board.new(boardX, boardY);
+        do board.draw();
+
+        //do DrawSprites.draw1(boardX + boardY);
+        //do DrawSprites.draw2((boardX + boardY) + 1);
+
+        //var int numberOffset;
+        //let numberOffset = 32;
+        //do DrawSprites.draw1(numberOffset);
+        //do DrawSprites.draw2(numberOffset + 1);
+        //do DrawSprites.draw3(numberOffset + 2);
+        //do DrawSprites.draw4(numberOffset + 3);
+        //do DrawSprites.draw5(numberOffset + 4);
+        //do DrawSprites.drawPawnWW(numberOffset + 5);
+        //do DrawSprites.drawPawnBB((numberOffset + 5) + (32 * 16));
+        //do DrawSprites.drawPawnWB((numberOffset + 5) + (64 * 16));
+        //do DrawSprites.drawPawnBW((numberOffset + 5) + (96 * 16));
+
+        //do DrawSprites.drawKingWW(numberOffset + 6);
+        //do DrawSprites.drawKingBB((numberOffset + 6) + (32 * 16));
+        //do DrawSprites.drawKingWB((numberOffset + 6) + (64 * 16));
+        //do DrawSprites.drawKingBW((numberOffset + 6) + (96 * 16));
+
+        //do DrawSprites.drawQueenWW(numberOffset + 7);
+        //do DrawSprites.drawQueenBB((numberOffset + 7) + (32 * 16));
+        //do DrawSprites.drawQueenWB((numberOffset + 7) + (64 * 16));
+        //do DrawSprites.drawQueenBW((numberOffset + 7) + (96 * 16));
+
+        //do DrawSprites.drawBishopWW(numberOffset + 8);
+        //do DrawSprites.drawBishopBB((numberOffset + 8) + (32 * 16));
+        //do DrawSprites.drawBishopWB((numberOffset + 8) + (64 * 16));
+        //do DrawSprites.drawBishopBW((numberOffset + 8) + (96 * 16));
+
+        //do DrawSprites.drawRookWW(numberOffset + 9);
+        //do DrawSprites.drawRookBB(numberOffset + 9 + (32 * 16));
+        //do DrawSprites.drawRookWB(numberOffset + 9 + (64 * 16));
+        //do DrawSprites.drawRookBW(numberOffset + 9 + (96 * 16));
+
+        //do DrawSprites.drawKnightWW(numberOffset + 10);
+        //do DrawSprites.drawKnightBB((numberOffset + 10) + (32 * 16));
+        //do DrawSprites.drawKnightWB((numberOffset + 10) + (64 * 16));
+        //do DrawSprites.drawKnightBW((numberOffset + 10) + (96 * 16));
+
+        do board.dispose();
         return;
     }
 }

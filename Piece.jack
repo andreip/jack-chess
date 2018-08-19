@@ -1,0 +1,221 @@
+class Piece {
+    field int type, color;
+    // piece's coords are used only for debugging.
+    field int x, y;
+
+    constructor Piece newPawn(int x, int y, int c) {
+        let type = Utils.PAWN();
+        do init(x, y, c);
+        return this;
+    }
+    constructor Piece newBishop(int x, int y, int c) {
+        let type = Utils.BISHOP();
+        do init(x, y, c);
+        return this;
+    }
+    constructor Piece newKnight(int x, int y, int c) {
+        let type = Utils.KNIGHT();
+        do init(x, y, c);
+        return this;
+    }
+    constructor Piece newRook(int x, int y, int c) {
+        let type = Utils.ROOK();
+        do init(x, y, c);
+        return this;
+    }
+    constructor Piece newQueen(int x, int y, int c) {
+        let type = Utils.QUEEN();
+        do init(x, y, c);
+        return this;
+    }
+    constructor Piece newKing(int x, int y, int c) {
+        let type = Utils.KING();
+        do init(x, y, c);
+        return this;
+    }
+    method void dispose() {
+        do Memory.deAlloc(this);
+        return;
+    }
+
+    method void init(int _x, int _y, int _c) {
+        let x = _x;
+        let y = _y;
+        let color = _c;
+        //do Output.printString("Initialized ");
+        //do print();
+        return;
+    }
+
+    /* Move piece to new location. */
+    method void set(int _x, int _y) {
+        let x = _x;
+        let y = _y;
+        return;
+    }
+
+    method boolean isBlack() {
+        return color = Utils.BLACK();
+    }
+
+    method boolean isWhite() {
+        return color = Utils.WHITE();
+    }
+
+    /* Calls corresponding drawing color based on its own location. */
+    method void drawPiece(int location, int squareColor) {
+        if (type = Utils.PAWN()) {
+            if (isWhite()) {
+                if (squareColor = Utils.WHITE()) {
+                    do DrawSprites.drawPawnWW(location);
+                } else {
+                    do DrawSprites.drawPawnWB(location);
+                }
+            } else {
+                if (squareColor = Utils.WHITE()) {
+                    do DrawSprites.drawPawnBW(location);
+                } else {
+                    do DrawSprites.drawPawnBB(location);
+                }
+            }
+            return;
+        }
+
+        if (type = Utils.KNIGHT()) {
+            if (isWhite()) {
+                if (squareColor = Utils.WHITE()) {
+                    do DrawSprites.drawKnightWW(location);
+                } else {
+                    do DrawSprites.drawKnightWB(location);
+                }
+            } else {
+                if (squareColor = Utils.WHITE()) {
+                    do DrawSprites.drawKnightBW(location);
+                } else {
+                    do DrawSprites.drawKnightBB(location);
+                }
+            }
+            return;
+        }
+
+        if (type = Utils.BISHOP()) {
+            if (isWhite()) {
+                if (squareColor = Utils.WHITE()) {
+                    do DrawSprites.drawBishopWW(location);
+                } else {
+                    do DrawSprites.drawBishopWB(location);
+                }
+            } else {
+                if (squareColor = Utils.WHITE()) {
+                    do DrawSprites.drawBishopBW(location);
+                } else {
+                    do DrawSprites.drawBishopBB(location);
+                }
+            }
+            return;
+        }
+
+        if (type = Utils.ROOK()) {
+            if (isWhite()) {
+                if (squareColor = Utils.WHITE()) {
+                    do DrawSprites.drawRookWW(location);
+                } else {
+                    do DrawSprites.drawRookWB(location);
+                }
+            } else {
+                if (squareColor = Utils.WHITE()) {
+                    do DrawSprites.drawRookBW(location);
+                } else {
+                    do DrawSprites.drawRookBB(location);
+                }
+            }
+            return;
+        }
+
+        if (type = Utils.QUEEN()) {
+            if (isWhite()) {
+                if (squareColor = Utils.WHITE()) {
+                    do DrawSprites.drawQueenWW(location);
+                } else {
+                    do DrawSprites.drawQueenWB(location);
+                }
+            } else {
+                if (squareColor = Utils.WHITE()) {
+                    do DrawSprites.drawQueenBW(location);
+                } else {
+                    do DrawSprites.drawQueenBB(location);
+                }
+            }
+            return;
+        }
+
+        if (type = Utils.KING()) {
+            if (isWhite()) {
+                if (squareColor = Utils.WHITE()) {
+                    do DrawSprites.drawKingWW(location);
+                } else {
+                    do DrawSprites.drawKingWB(location);
+                }
+            } else {
+                if (squareColor = Utils.WHITE()) {
+                    do DrawSprites.drawKingBW(location);
+                } else {
+                    do DrawSprites.drawKingBB(location);
+                }
+            }
+            return;
+        }
+
+        do Output.printString("Don't know how to draw piece");
+        do print();
+        do Sys.error(-1);
+        return;
+    }
+
+    method void print() {
+        var String color;
+
+        if (isBlack()) {
+            let color = "black";
+        } else {
+            if (isWhite()) {
+                let color = "white";
+            } else {
+                let color = "unknown color?";
+            }
+        }
+
+        do Output.printString(color);
+        do Output.printString(" ");
+        do Output.printString(getTypeStr());
+        do Output.printString("[");
+        do Output.printInt(x);
+        do Output.printString(", ");
+        do Output.printInt(y);
+        do Output.printString("]");
+        do Output.println();
+        return;
+    }
+
+    method String getTypeStr() {
+        if (type = Utils.PAWN()) {
+            return "Pawn";
+        }
+        if (type = Utils.KNIGHT()) {
+            return "Knight";
+        }
+        if (type = Utils.BISHOP()) {
+            return "Bishop";
+        }
+        if (type = Utils.ROOK()) {
+            return "Rook";
+        }
+        if (type = Utils.QUEEN()) {
+            return "Queen";
+        }
+        if (type = Utils.KING()) {
+            return "King";
+        }
+        return "Unknown?";
+    }
+}
