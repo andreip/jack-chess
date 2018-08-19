@@ -1,0 +1,67 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+        "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+    <title>Sokoban Bitmap Editor</title>
+    <style>
+      #generationTable {
+        width: 815px;
+      }
+    </style>
+    <script type="text/javascript" src="BitmapEditor.js"></script>
+</head>
+<body onload="Init();">
+    <h4><i>IDC Herzliya / Efi Arazi School of Computer Science / Digital Systems Construction, Spring 2011 / Project 09 / Golan Parashi</i></h4>
+    <h1>Sokoban Bitmap Editor</h1>
+    <p>This javascript applicaiton is used to generate highly optimized jack code for drawing a 16x16 bitmap to the screen.</p>
+    <p>Using the mouse, click the desired cell to mark/unmark it. You may use 90 degrees rotation and vertical mirroring by<br>
+    clicking the appropriate buttons.</p>
+    <p>When you are finished drawing, you may select function type and enter function's name.</p>
+    <p>
+    <table id="generationTable">
+        <thead>
+            <tr>
+                <th align="left">Bitmap</th>
+                <th align="left"></th>
+                <th align="left">Generated Output</th>
+            </tr>
+        </thead>
+        <tr>
+            <td><div id="grid"/></td>
+            <td>
+                <form action="javascript:GenerateBitMap();">
+                    <table>
+                        <tr><td align="left">Function Type:</td></tr>
+                        <tr><td align="center">
+                                <select id="functionType" onChange="GenerateBitMap()">
+                                    <option value="function" selected="selected">function</option>
+                                    <option value="method">method</option>                                    
+                                </select>
+                        </td></tr>
+                        <tr><td align="left">Function Name:</td></tr>
+                        <tr><td align="left"><input type="text" value="draw" id="functionName" onkeyup="GenerateBitMap()"/></td></tr>
+                        <tr><td></td></tr>
+                        <tr><td align="center"><input type="button" value="Generate Code >>" onclick="GenerateBitMap()"/></td></tr>
+                        <tr><td></td></tr>
+                        <tr><td align="center"><input type="button" value="Export >>" onclick="Export()"/></td></tr>
+                        <tr><td align="center"><input type="button" value="Import <<" onclick="Import()"/></td></tr>
+                    </table>
+                </form>
+            </td>
+            <td><textarea id="generatedCode" cols="50" rows="20"></textarea></td>
+        </tr>
+        <tr>
+            <table>
+                <tr>
+                    <td align="center"><input type="button" value="Rotate right" onclick="RotateBitmapRight()"/></td>
+                    <td align="center"><input type="button" value="Vertical Mirror" onclick="MirrorBitmap()"/></td>
+                    <td align="center"><input type="button" value="Left" onclick="MoveLeft()"/></td>
+                    <td align="center"><input type="button" value="Right" onclick="MoveRight()"/></td>
+                    <td align="center"><input type="button" value="Up" onclick="MoveUp()"/></td>
+                    <td align="center"><input type="button" value="Down" onclick="MoveDown()"/></td>
+                </tr>
+            </table>
+        </tr>
+    </table>
+</body>
+</html>

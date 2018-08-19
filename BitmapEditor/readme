@@ -1,0 +1,3 @@
+Like the initial editor (author in the html file), but added some more operations to it, like
+* export/import which helped me create my .raw files
+* move up/down/left/right
