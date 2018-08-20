@@ -1,7 +1,7 @@
 class Utils {
     /* Colors */
-    function int WHITE() { return 100; }
-    function int BLACK() { return 101; }
+    function int WHITE() { return 0; }
+    function int BLACK() { return 1; }
     /* Piece constant values. */
     function int PAWN() { return 10; }
     function int BISHOP() { return 11; }
@@ -9,6 +9,7 @@ class Utils {
     function int ROOK() { return 13; }
     function int QUEEN() { return 14; }
     function int KING() { return 15; }
+    function int PIECES() { return 6; } // total unique pieces
 
     // number of rows/cols for a chess board.
     function int CHESSN() { return 8; }
@@ -95,5 +96,23 @@ class Utils {
         do Output.moveCursor(0, 0);
         do Output.printString(str);
         return;
+    }
+
+    function String concat(String str1, String str2) {
+        var int i;
+        var String str;
+
+        let str = String.new(str1.length() + str2.length());
+        let i = 0;
+        while (i < str1.length()) {
+            do str.appendChar(str1.charAt(i));
+            let i = i + 1;
+        }
+        let i = 0;
+        while (i < str2.length()) {
+            do str.appendChar(str2.charAt(i));
+            let i = i + 1;
+        }
+        return str;
     }
 }

@@ -15,6 +15,12 @@ class Board {
         let rows = 9;  // includes coordinate system and pieces
         let cols = 9;
 
+        // initializes the pieces as singletons, so we can reuse them on the
+        // board as many times as we want w/o having to create new memory
+        // entries for them.
+        do Piece.initInstances();
+
+        // allocate memory for the board.
         let n = 8;
         let i = 0;
         let board = Array.new(n);
@@ -22,6 +28,7 @@ class Board {
             let board[i] = Array.new(n);
             let i = i + 1;
         }
+        // put pieces on the board
         do initBoard();
 
         return this;
@@ -32,20 +39,10 @@ class Board {
         var Array a;
         var Piece p;
 
-        // first dispose of the pieces on the board
-        let i = 0;
-        while (i < n) {
-            let j = 0;
-            while (j < n) {
-                let p = Board(i, j);
-                if (~(p = null)) {
-                    do p.dispose();
-                }
-                let j = j + 1;
-            }
-            let i = i + 1;
-        }
-        // then dispose of the board array
+        // let the pieces know that they can dispose themselves
+        // now that we're disposing of the board.
+        do Piece.disposeAll();
+        // dispose of the board array too
         let i = 0;
         while (i < n) {
             let a = board[i];
@@ -55,6 +52,12 @@ class Board {
         do board.dispose();
 
         do Memory.deAlloc(this);
+        return;
+    }
+
+    method void newBoard() {
+        do initBoard();
+        do drawBoard();
         return;
     }
 
@@ -107,30 +110,36 @@ class Board {
     }
 
     method void drawBoard() {
-        var Piece p;
         var int i, j;
-        var int location, squareColor;
 
         let i = 0;
         while (i < n) {
             let j = 0;
             while (j < n) {
-                let location = getPieceLocation(i, j);
-                let squareColor = Board.squareColor(i, j);
-                let p = Board(i, j);
-                // draw empty square if no piece.
-                if (p = null) {
-                    if (squareColor = Utils.WHITE()) {
-                        do DrawSprites.drawWhite(location);
-                    } else {
-                        do DrawSprites.drawBlack(location);
-                    }
-                } else {
-                    do p.drawPiece(location, squareColor);
-                }
+                do drawBoardSquare(i, j);
                 let j = j + 1;
             }
             let i = i + 1;
+        }
+        return;
+    }
+
+    method void drawBoardSquare(int i, int j) {
+        var Piece p;
+        var int location, squareColor;
+
+        let location = getPieceLocation(i, j);
+        let squareColor = Board.squareColor(i, j);
+        let p = Board(i, j);
+        // draw empty square if no piece.
+        if (p = null) {
+            if (squareColor = Utils.WHITE()) {
+                do DrawSprites.drawWhite(location);
+            } else {
+                do DrawSprites.drawBlack(location);
+            }
+        } else {
+            do p.drawPiece(location, squareColor);
         }
         return;
     }
@@ -156,6 +165,29 @@ class Board {
         return;
     }
 
+    method boolean isLegalMove(int x1, int y1, int x2, int y2,
+                               int playerToMove) {
+        // TODO: need to check that the piece can do that
+        // and that the current board state does allow that,
+        // that no own/adversary pieces are in destination's way.
+        // TODO: also check that the play is moving his own pieces! :)
+        // and also that there's a piece at the source, that
+        // you're actually moving something.
+        // TODO: special rule for promotion.
+        // TODO: is someone in check? can you actually move? does it block the
+        // existing check?
+        return true;
+    }
+
+    method void move(int r1, int c1, int r2, int c2) {
+        var Piece p;
+        let p = Board(r1, c1);
+        do setBoard(r1, c1, null);
+        do setBoard(r2, c2, p);
+        do drawBoard();
+        return;
+    }
+
     method void _initNull() {
         var int i, j;
         let i = 0;
@@ -174,21 +206,21 @@ class Board {
         var int j;
         let j = 0;
         while (j < n) {
-            do setBoard(i, j, Piece.newPawn(i, j, color));
+            do setBoard(i, j, Piece.getInstance(Utils.PAWN(), color));
             let j = j + 1;
         }
         return;
     }
 
     method void _initRestPieces(int i, int color) {
-        do setBoard(i, 0, Piece.newRook(i, 0, color));
-        do setBoard(i, 1, Piece.newKnight(i, 1, color));
-        do setBoard(i, 2, Piece.newBishop(i, 2, color));
-        do setBoard(i, 3, Piece.newQueen(i, 3, color));
-        do setBoard(i, 4, Piece.newKing(i, 4, color));
-        do setBoard(i, 5, Piece.newBishop(i, 5, color));
-        do setBoard(i, 6, Piece.newKnight(i, 6, color));
-        do setBoard(i, 7, Piece.newRook(i, 7, color));
+        do setBoard(i, 0, Piece.getInstance(Utils.ROOK(), color));
+        do setBoard(i, 1, Piece.getInstance(Utils.KNIGHT(), color));
+        do setBoard(i, 2, Piece.getInstance(Utils.BISHOP(), color));
+        do setBoard(i, 3, Piece.getInstance(Utils.QUEEN(), color));
+        do setBoard(i, 4, Piece.getInstance(Utils.KING(), color));
+        do setBoard(i, 5, Piece.getInstance(Utils.BISHOP(), color));
+        do setBoard(i, 6, Piece.getInstance(Utils.KNIGHT(), color));
+        do setBoard(i, 7, Piece.getInstance(Utils.ROOK(), color));
         return;
     }
 
@@ -198,5 +230,26 @@ class Board {
         } else {
             return Utils.WHITE();
         }
+    }
+
+    // returns coordinate of a square: e.g. A2, B6 etc.
+    function String coordsToString(int row, int col) {
+        var String files, ranks, coordsString, msg;
+
+        // Sanity checking bounds of crt square.
+        let msg = "coordsToString: row or col out of bounds";
+        if (row < 0) { do Utils.error(msg); }
+        if (row > (Utils.CHESSN() - 1)) { do Utils.error(msg); }
+        if (col < 0) { do Utils.error(msg); }
+        if (col > (Utils.CHESSN() - 1)) { do Utils.error(msg); }
+
+        // Form text to show on display.
+        let files = "ABCDEFGH";
+        let ranks = "12345678";
+        let coordsString = String.new(2);
+        do coordsString.appendChar(files.charAt(col));
+        do coordsString.appendChar(ranks.charAt(row));
+
+        return coordsString;
     }
 }

@@ -27,6 +27,75 @@ class GamePlay {
         return;
     }
 
+    method void newGame() {
+        let crtPlayerToMove = Utils.WHITE();
+        do _drawPlayerToMoveIndicator();
+        let selRow = -1;
+        let selCol = -1;
+        // defaults to A1 in left bottom corner
+        do _writeCurrentSquare(0, 0);
+        do _writeInHelpTextArea("");
+        return;
+    }
+
+    // react to user pressing keys by changing its view
+    // and by letting the board that a move happened, to update
+    // its state as well.
+    method void pressedKey(int key) {
+        var String s1, s2;
+
+        if (key = Utils.LEFTARROWKEY()) {
+            let crtCol = Math.max(0, crtCol - 1);
+        }
+        if (key = Utils.UPARROWKEY()) {
+            let crtRow = Math.min(Utils.CHESSN() - 1, crtRow + 1);
+        }
+        if (key = Utils.RIGHTARROWKEY()) {
+            let crtCol = Math.min(Utils.CHESSN() - 1, crtCol + 1);
+        }
+        if (key = Utils.DOWNARROWKEY()) {
+            let crtRow = Math.max(0, crtRow - 1);
+        }
+        if (key = Utils.ESCKEY()) {
+            do newGame();
+            do board.newBoard();
+        }
+        if (key = Utils.SPACEKEY()) {
+            // if no current selection, we record it and show on the screen
+            if (selRow = -1) {
+                let selRow = crtRow;
+                let selCol = crtCol;
+                let s1 = Board.coordsToString(selRow, selCol);
+                let s2 = Utils.concat("selected ", s1);
+                do _writeInHelpTextArea(s2);
+                do s1.dispose();
+                do s2.dispose();
+            } else {
+                // move there
+                if (board.isLegalMove(selRow, selCol,
+                                      crtRow, crtCol,
+                                      crtPlayerToMove)) {
+                    // perform the move, then update who's turn to move is.
+                    do board.move(selRow, selCol, crtRow, crtCol);
+                    let crtPlayerToMove = Utils.mod(crtPlayerToMove + 1, 2);
+                    do _drawPlayerToMoveIndicator();
+                    // reset selected square now
+                    let selRow = -1;
+                    let selCol = -1;
+                    do _writeInHelpTextArea("");
+                // else, reset selection, let user know it was an illegal move.
+                } else {
+                    let selRow = -1;
+                    let selCol = -1;
+                    do _writeInHelpTextArea("illegal move");
+                }
+            }
+        }
+
+        do _writeCurrentSquare(crtRow, crtCol);
+        return;
+    }
+
     method void draw() {
         do Utils.drawRectangleBorder(x, y, x + size, y + size);
         do _drawPlayerToMoveIndicator();
@@ -50,30 +119,22 @@ class GamePlay {
     }
 
     method void _writeCurrentSquare(int row, int col) {
-        var String files, ranks, crtSquare, msg;
+        var String coordsString;
 
-        // Sanity checking bounds of crt square.
-        let msg = "_writeCurrentSquare: row or col out of bounds";
-        if (row < 0) { do Utils.error(msg); }
-        if (row > (Utils.CHESSN() - 1)) { do Utils.error(msg); }
-        if (col < 0) { do Utils.error(msg); }
-        if (col > (Utils.CHESSN() - 1)) { do Utils.error(msg); }
+        let coordsString = Board.coordsToString(row, col);
 
-        // Form text to show on display.
-        let files = "ABCDEFGH";
-        let ranks = "12345678";
-        let crtSquare = String.new(2);
-        do crtSquare.appendChar(files.charAt(col));
-        do crtSquare.appendChar(ranks.charAt(row));
+        // updates the current values
+        let crtRow = row;
+        let crtCol = col;
 
         // write crt square on screen for users to see.
         do Utils.printStringAtPx(
-            crtSquare,
+            coordsString,
             (x + (size / 2)) + (Utils.FONTWIDTH() * 5),
             (y + (size / 2)) - Utils.FONTHEIGHT()
         );
 
-        do crtSquare.dispose();
+        do coordsString.dispose();
         return;
     }
 
@@ -110,18 +171,6 @@ class GamePlay {
             x + (Utils.FONTWIDTH() * (offset + 1)),
             row
         );
-        return;
-    }
-
-    method void newGame() {
-        let crtPlayerToMove = Utils.WHITE();
-        do _drawPlayerToMoveIndicator();
-        let selRow = -1;
-        let selCol = -1;
-        let crtRow = 0;  // defaults to A1 in left bottom corner
-        let crtCol = 0;
-        do _writeCurrentSquare(crtRow, crtCol);
-        do _writeInHelpTextArea("");
         return;
     }
 }

@@ -1,56 +1,115 @@
 class Piece {
     field int type, color;
-    // piece's coords are used only for debugging.
-    field int x, y;
+    // singletons
+    static Piece blackPawn, whitePawn;
+    static Piece blackBishop, whiteBishop;
+    static Piece blackKnight, whiteKnight;
+    static Piece blackRook, whiteRook;
+    static Piece blackQueen, whiteQueen;
+    static Piece blackKing, whiteKing;
 
-    constructor Piece newPawn(int x, int y, int c) {
+    // Call initInstances and the getInstance directly, don't
+    // need to interact with the constructors directly yourself!
+    function void initInstances() {
+        let blackPawn = Piece.newPawn(Utils.BLACK());
+        let blackBishop = Piece.newBishop(Utils.BLACK());
+        let blackKnight = Piece.newKnight(Utils.BLACK());
+        let blackRook = Piece.newRook(Utils.BLACK());
+        let blackQueen = Piece.newQueen(Utils.BLACK());
+        let blackKing = Piece.newKing(Utils.BLACK());
+        let whitePawn = Piece.newPawn(Utils.WHITE());
+        let whiteBishop = Piece.newBishop(Utils.WHITE());
+        let whiteKnight = Piece.newKnight(Utils.WHITE());
+        let whiteRook = Piece.newRook(Utils.WHITE());
+        let whiteQueen = Piece.newQueen(Utils.WHITE());
+        let whiteKing = Piece.newKing(Utils.WHITE());
+        return;
+    }
+
+    function void disposeAll() {
+        do blackPawn.dispose(); do whitePawn.dispose();
+        do blackRook.dispose(); do whiteRook.dispose();
+        do blackBishop.dispose(); do whiteBishop.dispose();
+        do blackKnight.dispose(); do whiteKnight.dispose();
+        do blackQueen.dispose(); do whiteQueen.dispose();
+        do blackKing.dispose(); do whiteKing.dispose();
+        return;
+    }
+
+    // Can use this after you've called initInstances only.
+    function Piece getInstance(int type, int color) {
+        if (type = Utils.PAWN()) {
+            if (color = Utils.WHITE()) {
+                return whitePawn;
+            }
+            return blackPawn;
+        }
+        if (type = Utils.BISHOP()) {
+            if (color = Utils.WHITE()) {
+                return whiteBishop;
+            }
+            return blackBishop;
+        }
+        if (type = Utils.KNIGHT()) {
+            if (color = Utils.WHITE()) {
+                return whiteKnight;
+            }
+            return blackKnight;
+        }
+        if (type = Utils.ROOK()) {
+            if (color = Utils.WHITE()) {
+                return whiteRook;
+            }
+            return blackRook;
+        }
+        if (type = Utils.QUEEN()) {
+            if (color = Utils.WHITE()) {
+                return whiteQueen;
+            }
+            return blackQueen;
+        }
+        if (type = Utils.KING()) {
+            if (color = Utils.WHITE()) {
+                return whiteKing;
+            }
+            return blackKing;
+        }
+        do Utils.error("Unknown piece type given.");
+        return null;
+    }
+
+    constructor Piece newPawn(int c) {
         let type = Utils.PAWN();
-        do init(x, y, c);
+        let color = c;
         return this;
     }
-    constructor Piece newBishop(int x, int y, int c) {
+    constructor Piece newBishop(int c) {
         let type = Utils.BISHOP();
-        do init(x, y, c);
+        let color = c;
         return this;
     }
-    constructor Piece newKnight(int x, int y, int c) {
+    constructor Piece newKnight(int c) {
         let type = Utils.KNIGHT();
-        do init(x, y, c);
+        let color = c;
         return this;
     }
-    constructor Piece newRook(int x, int y, int c) {
+    constructor Piece newRook(int c) {
         let type = Utils.ROOK();
-        do init(x, y, c);
+        let color = c;
         return this;
     }
-    constructor Piece newQueen(int x, int y, int c) {
+    constructor Piece newQueen(int c) {
         let type = Utils.QUEEN();
-        do init(x, y, c);
+        let color = c;
         return this;
     }
-    constructor Piece newKing(int x, int y, int c) {
+    constructor Piece newKing(int c) {
         let type = Utils.KING();
-        do init(x, y, c);
+        let color = c;
         return this;
     }
     method void dispose() {
         do Memory.deAlloc(this);
-        return;
-    }
-
-    method void init(int _x, int _y, int _c) {
-        let x = _x;
-        let y = _y;
-        let color = _c;
-        //do Output.printString("Initialized ");
-        //do print();
-        return;
-    }
-
-    /* Move piece to new location. */
-    method void set(int _x, int _y) {
-        let x = _x;
-        let y = _y;
         return;
     }
 
@@ -188,11 +247,6 @@ class Piece {
         do Output.printString(color);
         do Output.printString(" ");
         do Output.printString(getTypeStr());
-        do Output.printString("[");
-        do Output.printInt(x);
-        do Output.printString(", ");
-        do Output.printInt(y);
-        do Output.printString("]");
         do Output.println();
         return;
     }
