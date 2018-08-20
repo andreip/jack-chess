@@ -1,2 +1,0 @@
-Before compiling the jack code, make sure to do "make" on the terminal to
-genearate DrawSprites.jack and some sprites in spirtes/ folder.
