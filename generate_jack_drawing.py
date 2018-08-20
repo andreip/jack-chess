@@ -215,8 +215,6 @@ class Piece:
                     self.contour.add((i,j))
                 else:
                     self._dfs((i, j))
-        #print("Done with dfs, the root parents of %s are: %s"
-        #     % (self, set(self.parent.values())))
 
     def _dfs(self, start):
 
@@ -251,25 +249,6 @@ class Piece:
         if i < self.M - 1:      yield i + 1, j
         if j > 0:               yield i, j - 1
         if j < self.N - 1:      yield i, j + 1
-
-
-def pieceWB(pieceWW):
-    out = []
-    for line in pieceWW.split('\n'):
-        start = line.find(BLACK)  # find first piece occurrence
-        last = line.rfind(BLACK)  # find last piece occurrence
-        newline = []
-        for i, x in enumerate(line):
-            # Invert only on the outside of the piece.
-            if (
-                (start != -1 and i < start) or
-                (last != -1 and i > last)
-            ):
-                newline.append(INVERT_MAP.get(x, x))
-            else:
-                newline.append(x)
-        out.append(''.join(newline))
-    return '\n'.join(out)
 
 
 def generateSprite(path, content):

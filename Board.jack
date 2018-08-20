@@ -184,7 +184,8 @@ class Board {
         let p = Board(r1, c1);
         do setBoard(r1, c1, null);
         do setBoard(r2, c2, p);
-        do drawBoard();
+        do drawBoardSquare(r1, c1);
+        do drawBoardSquare(r2, c2);
         return;
     }
 
