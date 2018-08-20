@@ -58,6 +58,7 @@ class ChessGame {
                 do Sys.wait(50);
             }
 
+            // TODO: disable prints here.
             do Output.printString("Pressed key ");
             do Output.printInt(crtKey);
             do Output.printString(" ");

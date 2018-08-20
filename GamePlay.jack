@@ -3,6 +3,12 @@ class GamePlay {
     // rectangle to draw itself into, with top left corner.
     field int x, y, size;
     field int crtPlayerToMove;
+    // if you selected a square and then another, it tells
+    // the gameplay we want to move from selected square to
+    // the current square.
+    field int selRow, selCol;   // current selected square
+    field int crtRow, crtCol;   // current square we're on
+    field String helpText;
     // reference to it, so it can tell it when a move has happened.
     field Board board;
 
@@ -26,15 +32,68 @@ class GamePlay {
         do _drawPlayerToMoveIndicator();
         do _writeInPlayerArea(Utils.WHITE(), 2, "Player 1");
         do _writeInPlayerArea(Utils.BLACK(), 2, "Player 2");
+        do Utils.printStringAtPx(
+            "Crt square: ",
+            x + Utils.FONTWIDTH(),
+            (y + (size / 2)) - Utils.FONTHEIGHT()
+        );
         return;
     }
 
     method void _drawPlayerToMoveIndicator() {
-        // erase crt player and redraw.
+        // erase crt player indicator from both.
         do _writeInPlayerArea(Utils.WHITE(), 0, " ");
         do _writeInPlayerArea(Utils.BLACK(), 0, " ");
-        // redraw that he's the active player.
+        // redraw the active player.
         do _writeInPlayerArea(crtPlayerToMove, 0, "<");
+        return;
+    }
+
+    method void _writeCurrentSquare(int row, int col) {
+        var String files, ranks, crtSquare, msg;
+
+        // Sanity checking bounds of crt square.
+        let msg = "_writeCurrentSquare: row or col out of bounds";
+        if (row < 0) { do Utils.error(msg); }
+        if (row > (Utils.CHESSN() - 1)) { do Utils.error(msg); }
+        if (col < 0) { do Utils.error(msg); }
+        if (col > (Utils.CHESSN() - 1)) { do Utils.error(msg); }
+
+        // Form text to show on display.
+        let files = "ABCDEFGH";
+        let ranks = "12345678";
+        let crtSquare = String.new(2);
+        do crtSquare.appendChar(files.charAt(col));
+        do crtSquare.appendChar(ranks.charAt(row));
+
+        // write crt square on screen for users to see.
+        do Utils.printStringAtPx(
+            crtSquare,
+            (x + (size / 2)) + (Utils.FONTWIDTH() * 5),
+            (y + (size / 2)) - Utils.FONTHEIGHT()
+        );
+
+        do crtSquare.dispose();
+        return;
+    }
+
+    method void _writeInHelpTextArea(String help) {
+        var String empty;
+
+        // write an empty line over it first, to erase any previous message.
+        let empty = "               ";
+        do Utils.printStringAtPx(
+            empty,
+            x + Utils.FONTWIDTH(),
+            y + (size / 2)
+        );
+        // writes help text for user.
+        do Utils.printStringAtPx(
+            help,
+            x + Utils.FONTWIDTH(),
+            y + (size / 2)
+        );
+        let helpText = help;
         return;
     }
 
@@ -56,6 +115,13 @@ class GamePlay {
 
     method void newGame() {
         let crtPlayerToMove = Utils.WHITE();
+        do _drawPlayerToMoveIndicator();
+        let selRow = -1;
+        let selCol = -1;
+        let crtRow = 0;  // defaults to A1 in left bottom corner
+        let crtCol = 0;
+        do _writeCurrentSquare(crtRow, crtCol);
+        do _writeInHelpTextArea("");
         return;
     }
 }

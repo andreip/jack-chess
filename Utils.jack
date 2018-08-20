@@ -83,4 +83,17 @@ class Utils {
         // vertically too, multiply by 16 to get to next row.
         return row * (32 * 16) + col;
     }
+
+    /* Extra Sys */
+    function void error(String str) {
+        do Utils.debug(str);
+        do Sys.error(-1);
+        return;
+    }
+
+    function void debug(String str) {
+        do Output.moveCursor(0, 0);
+        do Output.printString(str);
+        return;
+    }
 }
