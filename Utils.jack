@@ -82,7 +82,7 @@ class Utils {
         // by 32 gets us right underneath, one pixel lower.
         // but since we want to have 16 rows not 256 pixels
         // vertically too, multiply by 16 to get to next row.
-        return row * (32 * 16) + col;
+        return (row * (32 * 16)) + col;
     }
 
     /* Extra Sys */
