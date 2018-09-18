@@ -202,7 +202,14 @@ function Import() {
     generatedCode = document.getElementById('generatedCode');
     var lines = generateCode.value.split('\n');
 
+    // clear first
     for (i=0; i<16; i++) {
+        for (j=0; j<16; j++) {
+            grid[i][j] = 0;
+        }
+    }
+
+    for (i=0; i<lines.length; i++) {
         for (j=0; j<16; j++) {
             if (lines[i][j] == '0') {
                 grid[i][j] = 0;
