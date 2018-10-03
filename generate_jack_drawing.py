@@ -2,9 +2,11 @@
 
 import os
 
+CURRENT_DIR = os.path.dirname(os.path.realpath(__file__))
+
 OUTPUT_CLASS = 'DrawSprites'
 PIECES = ['Pawn', 'Bishop', 'Knight', 'Rook', 'Queen', 'King']
-SPRITES_DIR = "sprites/"
+SPRITES_DIR = os.path.join(CURRENT_DIR, "sprites/")
 
 WHITE = '0'
 BLACK = '1'
@@ -89,7 +91,8 @@ def generateJackDrawingClass():
     body = ''.join(map(_gen, filepaths))
     output = CLASS_TEMPLATE % {'name': OUTPUT_CLASS, 'body': body}
 
-    with open(OUTPUT_CLASS + '.jack', 'w') as f:
+    output_filepath = os.path.join(CURRENT_DIR, OUTPUT_CLASS + '.jack')
+    with open(output_filepath, 'w') as f:
         f.write(output)
 
 

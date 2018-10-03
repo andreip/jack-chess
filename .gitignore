@@ -1,6 +1,7 @@
 *.sw*
 *.pyc
 *.vm
+*.asm
 __pycache__
 py/
 sprites/*.gen
